@@ -8,6 +8,10 @@ if (process.env.NODE_ENV === "production") mode = "production";
 
 module.exports = {
     mode: mode,
+    output: {
+        assetModuleFilename: "images/[hash][ext][query]",
+        clean: true,
+    },
     devServer: {
         contentBase: "./dist",
         hot: true
@@ -16,7 +20,16 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
+                use: [
+                    {loader: MiniCssExtractPlugin.loader,
+                    options: {publicPath: ""}
+                    },
+                    'css-loader', 
+                    'postcss-loader']
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
             }
         ]
     },
