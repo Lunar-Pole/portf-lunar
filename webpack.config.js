@@ -12,6 +12,7 @@ module.exports = {
         assetModuleFilename: "images/[hash][ext][query]",
         clean: true,
     },
+    devtool: 'inline-source-map',
     devServer: {
         contentBase: "./dist",
         hot: true
