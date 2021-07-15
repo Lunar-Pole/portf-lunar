@@ -1,8 +1,8 @@
 import "regenerator-runtime/runtime";
-import { pathTree, MESSAGE, MY_EMAIL, MY_GITHUB } from "./utils";
-import Stack from "./classes/Stack";
-import Path from "./classes/Path";
-import CustomNodeElement from "./classes/CustomNodeElement";
+import { pathTree, MESSAGE, MY_EMAIL, MY_GITHUB } from "../utils";
+import Stack from "./Stack";
+import Path from "./Path";
+import CustomNodeElement from "./CustomNodeElement";
 
 export default class TypeWriter {
   constructor(wrapperElement) {
