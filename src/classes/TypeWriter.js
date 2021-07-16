@@ -116,25 +116,25 @@ export default class TypeWriter {
     return this;
   }
 
+  rollbackPathStack(error) {
+    const depthIndex = +error;
+    const result = this.pathStack.getValue(depthIndex);
+    if (depthIndex === 0) {
+      this.pathStack.clear();
+    } else {
+      this.pathStack.pop();
+    }
+    return `Cannot find folder: ${result}`;
+  }
+
   cd(pathName) {
     const result = this._path.getPathFragments(pathName);
     if (result instanceof Error)
       return this.generateStringError(result.message);
-
     this.updatePathStack(result);
     const currentPath = this._path.getCurrentPath(pathTree);
-
-    if (currentPath instanceof Error) {
-      const depthIndex = +currentPath.message;
-      const invalidPath = this.pathStack.getValue(depthIndex);
-      if (!depthIndex) {
-        this.pathStack.clear();
-      } else {
-        this.pathStack.pop();
-      }
-      return this.generateStringError(`Cannot find directory: ${invalidPath}`);
-    }
-    return `Entered: ${this._path}`;
+    if (!(currentPath instanceof Error)) return `Entered: ${this._path}`;
+    return this.rollbackPathStack(currentPath.message);
   }
 
   findFile(path, fileName) {
