@@ -117,13 +117,11 @@ export default class TypeWriter {
   }
 
   cd(pathName) {
-    let pathFragments = [];
-    if (this._path.isValidPath(pathName)) {
-      pathFragments = this._path.toPathArray(pathName);
-    } else {
-      return this.generateStringError("Invalid path");
-    }
-    this.updatePathStack(pathFragments);
+    const result = this._path.getPathFragments(pathName);
+    if (result instanceof Error)
+      return this.generateStringError(result.message);
+
+    this.updatePathStack(result);
     const currentPath = this._path.getCurrentPath(pathTree);
 
     if (currentPath instanceof Error) {

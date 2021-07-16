@@ -23,6 +23,11 @@ export default class Path {
     );
   }
 
+  getPathFragments(pathName) {
+    if (!this.isValidPath(pathName)) return new Error("Invalid path");
+    return this.toPathArray(pathName);
+  }
+
   trimQuery(query) {
     return query.replace(/[^A-Za-z0-9_.\/ ]/g, "#");
   }
