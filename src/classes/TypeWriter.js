@@ -189,9 +189,8 @@ export default class TypeWriter {
 
   clear() {
     const childrenElements = Array.from(this.WRAPPER_ELEMENT.children);
-    for (const DOMElement of childrenElements) {
-      DOMElement.remove();
-    }
+    childrenElements.forEach((e) => e.remove());
+    return this;
   }
 
   help() {
