@@ -3,6 +3,7 @@ import { pathTree, MESSAGE, MY_EMAIL, MY_GITHUB } from "../utils";
 import Stack from "./Stack";
 import Path from "./Path";
 import CustomNodeElement from "./CustomNodeElement";
+import FileSystem from "./FileSystem";
 
 export default class TypeWriter {
   constructor(wrapperElement) {
@@ -48,54 +49,11 @@ export default class TypeWriter {
     }
   }
 
-  getSizeInBytes(fileObj) {
-    let file;
-    if (fileObj.type === "exe") {
-      file = document.getElementById(fileObj.name);
-    } else {
-      file = fileObj.data;
-    }
-    return new Blob([file || ""]).size;
-  }
-
-  getFilesTable(path) {
-    let structuredTable = "";
-    let totalBytes = 0;
-    let totalFiles = 0;
-
-    Object.values(path).forEach((file) => {
-      const name = file.name.toUpperCase();
-      const type = file.type.toUpperCase();
-      const bytes = this.getSizeInBytes(file);
-      totalBytes += bytes;
-      totalFiles += 1;
-      structuredTable += `${name}\t[${type}]\t${bytes} \n`;
-    });
-
-    return {
-      structuredTable,
-      totalBytes,
-      totalFiles,
-    };
-  }
-
-  getContentWidth(table) {
-    return table.split("\n")[0].length + 8; // 8 == characters in [\t\t];
-  }
-
-  getFolderStats(path) {
-    let { structuredTable, totalBytes, totalFiles } = this.getFilesTable(path);
-    const width = this.getContentWidth(structuredTable);
-    structuredTable += `${"-".repeat(
-      width
-    )}\n${totalFiles} files(s) in total, ${totalBytes} byte(s)`;
-    return structuredTable;
-  }
-
   ls() {
     const currentPath = this._path.getCurrentPath(pathTree);
     // param folders need to be transformed to Capitalize ??
-    return this.getFolderStats(currentPath);
+    const fileSystem = new FileSystem();
+    return fileSystem.getFolderStats(currentPath);
   }
 
   generateStringError(error) {
