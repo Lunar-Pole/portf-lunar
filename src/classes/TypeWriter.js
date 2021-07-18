@@ -83,8 +83,7 @@ export default class TypeWriter {
     return table.split("\n")[0].length + 8; // 8 == characters in [\t\t];
   }
 
-  showFolderStructure(path) {
-    // incorrect method name
+  getFolderStats(path) {
     let { structuredTable, totalBytes, totalFiles } = this.getFilesTable(path);
     const width = this.getContentWidth(structuredTable);
     structuredTable += `${"-".repeat(
@@ -96,7 +95,7 @@ export default class TypeWriter {
   ls() {
     const currentPath = this._path.getCurrentPath(pathTree);
     // param folders need to be transformed to Capitalize ??
-    return this.showFolderStructure(currentPath);
+    return this.getFolderStats(currentPath);
   }
 
   generateStringError(error) {
