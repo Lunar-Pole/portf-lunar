@@ -58,20 +58,24 @@ export default class TypeWriter {
     return new Blob([file || ""]).size;
   }
 
-  getFilesTable(path, initialBytes = 0, initialFiles = 0) {
-    let structureTable = "";
-    for (const dir in path) {
-      const name = path[dir].name.toUpperCase();
-      const type = path[dir].type.toUpperCase();
-      const bytes = this.getSizeInBytes(path[dir]);
-      initialBytes += bytes;
-      initialFiles++;
-      structureTable += `${name}\t[${type}]\t${bytes} \n`;
-    }
+  getFilesTable(path) {
+    let structuredTable = "";
+    let totalBytes = 0;
+    let totalFiles = 0;
+
+    Object.values(path).forEach((file) => {
+      const name = file.name.toUpperCase();
+      const type = file.type.toUpperCase();
+      const bytes = this.getSizeInBytes(file);
+      totalBytes += bytes;
+      totalFiles += 1;
+      structuredTable += `${name}\t[${type}]\t${bytes} \n`;
+    });
+
     return {
-      structureTable,
-      initialBytes,
-      initialFiles,
+      structuredTable,
+      totalBytes,
+      totalFiles,
     };
   }
 
@@ -81,16 +85,12 @@ export default class TypeWriter {
 
   showFolderStructure(path) {
     // incorrect method name
-    let {
-      structureTable,
-      initialBytes: totalBytes,
-      initialFiles: totalFiles,
-    } = this.getFilesTable(path);
-    const width = this.getContentWidth(structureTable);
-    structureTable += `${"-".repeat(
+    let { structuredTable, totalBytes, totalFiles } = this.getFilesTable(path);
+    const width = this.getContentWidth(structuredTable);
+    structuredTable += `${"-".repeat(
       width
     )}\n${totalFiles} files(s) in total, ${totalBytes} byte(s)`;
-    return structureTable;
+    return structuredTable;
   }
 
   ls() {
