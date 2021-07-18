@@ -94,13 +94,6 @@ export default class TypeWriter {
     return this.rollbackPathStack(currentPath.message);
   }
 
-  findFile(path, fileName) {
-    if (Array.isArray(path)) {
-      return path.find((fileObject) => fileObject.name === fileName);
-    }
-    return undefined;
-  }
-
   getFileData(file) {
     if (!file) return this.generateStringError("No such file found!");
     if (file.type !== "txt")
@@ -115,7 +108,8 @@ export default class TypeWriter {
       return this.generateStringError("You must specify the filename!");
     }
     const currentPath = this._path.getCurrentPath(pathTree);
-    const file = this.findFile(currentPath, fileName);
+    const fileSystem = new FileSystem();
+    const file = fileSystem.findFile(currentPath, fileName);
     return this.getFileData(file);
   }
 
@@ -123,7 +117,11 @@ export default class TypeWriter {
     if (!fileName) {
       return this.generateStringError("You must specify the filename!");
     }
-    const file = this.findFile(this._path.getCurrentPath(pathTree), fileName);
+    const fileSystem = new FileSystem();
+    const file = fileSystem.findFile(
+      this._path.getCurrentPath(pathTree),
+      fileName
+    );
     if (!file) return this.generateStringError("No such file found!");
     if (file.type !== "exe")
       return this.generateStringError(

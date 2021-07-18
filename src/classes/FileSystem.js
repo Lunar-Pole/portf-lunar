@@ -38,4 +38,11 @@ export default class FileSystem {
   getContentWidth(table) {
     return table.split("\n")[0].length + 8; // 8 == characters in [\t\t];
   }
+
+  findFile(path, fileName) {
+    if (Array.isArray(path)) {
+      return path.find((fileObject) => fileObject.name === fileName);
+    }
+    return undefined;
+  }
 }
