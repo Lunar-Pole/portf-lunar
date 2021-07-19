@@ -45,4 +45,11 @@ export default class FileSystem {
     }
     return undefined;
   }
+
+  getFileData(file) {
+    if (!file) return new Error("No such file found!");
+    if (file.type !== "txt")
+      return new Error("You cannot read this file! Try [run] instead");
+    return file.data;
+  }
 }

@@ -94,14 +94,14 @@ export default class TypeWriter {
     return this.rollbackPathStack(currentPath.message);
   }
 
-  getFileData(file) {
-    if (!file) return this.generateStringError("No such file found!");
-    if (file.type !== "txt")
-      return this.generateStringError(
-        "You cannot read this file! Try [run] instead"
-      );
-    return file.data;
-  }
+  // getFileData(file) {
+  //   if (!file) return this.generateStringError("No such file found!");
+  //   if (file.type !== "txt")
+  //     return this.generateStringError(
+  //       "You cannot read this file! Try [run] instead"
+  //     );
+  //   return file.data;
+  // }
 
   cat(fileName) {
     if (!fileName) {
@@ -110,7 +110,11 @@ export default class TypeWriter {
     const currentPath = this._path.getCurrentPath(pathTree);
     const fileSystem = new FileSystem();
     const file = fileSystem.findFile(currentPath, fileName);
-    return this.getFileData(file);
+    const result = fileSystem.getFileData(file);
+    if (result instanceof Error) {
+      return this.generateStringError(result.message);
+    }
+    return result;
   }
 
   run(fileName) {
