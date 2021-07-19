@@ -7,7 +7,9 @@
     "plugins": ["prettier"],
     "rules": {
         "prettier/prettier": "error",
-        "no-console": "off"
+        "no-console": "off",
+        "no-underscore-dangle": "off",
+        "class-methods-use-this": "off"
     },
     "parserOptions": {
         "ecmaVersion": 12,
