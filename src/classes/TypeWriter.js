@@ -110,7 +110,7 @@ export default class TypeWriter {
     const currentPath = this._path.getCurrentPath(pathTree);
     const fileSystem = new FileSystem();
     const file = fileSystem.findFile(currentPath, fileName);
-    const result = fileSystem.getFileData(file);
+    const result = fileSystem.getFileData(file, this.cat.name);
     if (result instanceof Error) {
       return this.generateStringError(result.message);
     }
@@ -126,11 +126,9 @@ export default class TypeWriter {
       this._path.getCurrentPath(pathTree),
       fileName
     );
-    if (!file) return this.generateStringError("No such file found!");
-    if (file.type !== "exe")
-      return this.generateStringError(
-        "You cannot run this file! Use [cat] instead"
-      );
+    const result = fileSystem.getFileData(file, this.run.name);
+    if (result instanceof Error)
+      return this.generateStringError(result.message);
     return this.performLoad(fileName);
   }
 
