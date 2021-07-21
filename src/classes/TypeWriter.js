@@ -94,15 +94,6 @@ export default class TypeWriter {
     return this.rollbackPathStack(currentPath.message);
   }
 
-  // getFileData(file) {
-  //   if (!file) return this.generateStringError("No such file found!");
-  //   if (file.type !== "txt")
-  //     return this.generateStringError(
-  //       "You cannot read this file! Try [run] instead"
-  //     );
-  //   return file.data;
-  // }
-
   cat(fileName) {
     if (!fileName) {
       return this.generateStringError("You must specify the filename!");
@@ -164,6 +155,7 @@ export default class TypeWriter {
       navigator.clipboard.writeText(MY_EMAIL);
       return "Email address is copied to the clipboard";
     }
+    return "Invalid query";
   }
 
   parseCommand(rawCmd) {
