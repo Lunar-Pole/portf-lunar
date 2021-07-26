@@ -355,7 +355,7 @@ template {
 html,
 body {
   background-color: var(--neon-background);
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Roboto Mono", monospace;
 }
 
 .outerWrapper {
