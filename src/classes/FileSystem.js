@@ -40,16 +40,29 @@ export default class FileSystem {
   }
 
   findFile(path, fileName) {
+    let result;
     if (Array.isArray(path)) {
-      return path.find((fileObject) => fileObject.name === fileName);
+      result = path.find((fileObject) => fileObject.name === fileName);
     }
-    return undefined;
+    return result || new Error("File was not found");
   }
 
-  getFileData(file) {
-    if (!file) return new Error("No such file found!");
-    if (file.type !== "txt")
-      return new Error("You cannot read this file! Try [run] instead");
-    return file.data;
+  getFileData(arg, cmdName) {
+    if (arg instanceof Error) return arg;
+    switch (cmdName) {
+      case "cat": {
+        if (arg.type !== "txt")
+          return new Error("You cannot cat this file! Try [run] instead");
+        return arg.data;
+      }
+      case "run": {
+        if (arg.type !== "exe")
+          return new Error("You cannot run this file! Try [cat] instead");
+        return arg.data;
+      }
+      default: {
+        return undefined;
+      }
+    }
   }
 }
